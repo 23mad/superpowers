@@ -18,6 +18,16 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
 
+## Pre-Planning: Memory Retrieval
+
+Before writing anything, query mempalace for historical context relevant to the implementation:
+
+1. **Search past implementations** — `mempalace_search` with the feature name, system names, and key technical terms from the spec. Look for: past plans for similar features, known pitfalls, architectural decisions that affect this work.
+
+2. **Query entity relationships** — `mempalace_kg_query` with the core entities (classes, systems, modules) that the spec mentions or will modify. Understand existing dependencies and known constraints before locking in the file structure.
+
+3. **Apply findings** — Incorporate relevant history into the plan: reference known patterns, avoid previously identified dead-ends, respect established architectural decisions. If mempalace reveals nothing relevant, proceed normally.
+
 ## Scope Check
 
 If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
@@ -26,6 +36,7 @@ If the spec covers multiple independent subsystems, it should have been broken i
 
 Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
 
+- Cross-check with mempalace entity relationships — if `mempalace_kg_query` showed that ClassA depends on ClassB, make sure both are accounted for in the file list.
 - Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
 - You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
 - Files that change together should live together. Split by responsibility, not by technical layer.
@@ -130,6 +141,14 @@ After writing the complete plan, look at the spec with fresh eyes and check the 
 **3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
 
 If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
+
+## Memory Write-Back
+
+After self-review passes and the plan is saved, record key information for future sessions:
+
+1. **Record architectural decisions** — `mempalace_add_drawer` with the plan's key decisions: which components are being created/modified, chosen approach and rationale, known risks. Use the appropriate wing/room (e.g., `wing="work-client"`, `room="planning"` or `room="architecture"`).
+
+2. **Add entity relationships** — `mempalace_kg_add` for new entities and relationships introduced by this plan (e.g., NewService `implements` FeatureX, TaskSystem `modifies` ExistingComponent).
 
 ## Execution Handoff
 

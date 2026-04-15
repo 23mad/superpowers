@@ -21,21 +21,24 @@ Every project goes through this process. A todo list, a single-function utility,
 
 You MUST create a task for each of these items and complete them in order:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+1. **Query local memory** — search mempalace (`mempalace_search` with task keywords, `mempalace_kg_query` with core entity names) for historical decisions, past designs, and related architecture context. Use results as investigation starting point to avoid repeating past analysis.
+2. **Explore project context** — check files, docs, recent commits, informed by mempalace results
+3. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
+4. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+5. **Propose 2-3 approaches** — with trade-offs and your recommendation
+6. **Present design** — in sections scaled to their complexity, get user approval after each section
+7. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
+8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+9. **User reviews written spec** — ask user to review the spec file before proceeding
+10. **Write back to memory** — record key design decisions (`mempalace_add_drawer`) and new entity relationships (`mempalace_kg_add`) discovered during brainstorming
+11. **Transition to implementation** — invoke writing-plans skill to create implementation plan
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
-    "Explore project context" [shape=box];
+    "Query mempalace\n(search + kg_query)" [shape=box, style=bold];
+    "Explore project context\n(with memory results)" [shape=box];
     "Visual questions ahead?" [shape=diamond];
     "Offer Visual Companion\n(own message, no other content)" [shape=box];
     "Ask clarifying questions" [shape=box];
@@ -45,9 +48,11 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Spec self-review\n(fix inline)" [shape=box];
     "User reviews spec?" [shape=diamond];
+    "Write back to mempalace\n(add_drawer + kg_add)" [shape=box, style=bold];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Explore project context" -> "Visual questions ahead?";
+    "Query mempalace\n(search + kg_query)" -> "Explore project context\n(with memory results)";
+    "Explore project context\n(with memory results)" -> "Visual questions ahead?";
     "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
     "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
     "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
@@ -59,7 +64,8 @@ digraph brainstorming {
     "Write design doc" -> "Spec self-review\n(fix inline)";
     "Spec self-review\n(fix inline)" -> "User reviews spec?";
     "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "User reviews spec?" -> "Write back to mempalace\n(add_drawer + kg_add)" [label="approved"];
+    "Write back to mempalace\n(add_drawer + kg_add)" -> "Invoke writing-plans skill";
 }
 ```
 
@@ -67,9 +73,16 @@ digraph brainstorming {
 
 ## The Process
 
-**Understanding the idea:**
+**Retrieving historical context (Step 1):**
 
-- Check out the current project state first (files, docs, recent commits)
+- Run `mempalace_search` with task keywords (feature name, system name, Chinese/English both work) to find past decisions, related designs, and prior analysis
+- Run `mempalace_kg_query` with core entity names (class names, system names, module names) to map known relationships and dependencies
+- Review results to identify: what was already decided, what was tried before, what constraints were established
+- If results are relevant, carry them forward as context for questions and design — don't re-investigate what's already known
+
+**Understanding the idea (Step 2):**
+
+- Check out the current project state first (files, docs, recent commits), using mempalace results to focus exploration
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
@@ -129,6 +142,14 @@ After the spec review loop passes, ask the user to review the written spec befor
 > "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+
+**Memory Write-Back (Step 10):**
+
+After user approves the spec, before transitioning to implementation:
+
+- `mempalace_add_drawer` — record key design decisions to the appropriate wing/room (e.g., `wing="work-client"`, `room="architecture"` or `room="decisions"`)
+- `mempalace_kg_add` — add new entity relationships discovered during brainstorming (e.g., SystemA `depends_on` SystemB, FeatureX `modifies` ComponentY)
+- Focus on decisions and relationships that would be valuable in future sessions — not a full transcript
 
 **Implementation:**
 

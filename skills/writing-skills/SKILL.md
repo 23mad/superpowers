@@ -19,6 +19,16 @@ You write test cases (pressure scenarios with subagents), watch them fail (basel
 
 **Official guidance:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This document provides additional patterns and guidelines that complement the TDD-focused approach in this skill.
 
+## Pre-Work: Memory Retrieval
+
+Before creating or editing any skill, query mempalace for relevant history:
+
+1. **Search past skill work** — `mempalace_search` with the skill topic, related technique names, and problem domain keywords. Look for: previous skill creation attempts, lessons learned, common agent failure patterns already observed.
+
+2. **Query related entities** — `mempalace_kg_query` with the skill name or the technique/system it documents. Understand if this skill relates to existing skills, tools, or workflows already recorded.
+
+3. **Apply findings** — If past sessions found specific agent rationalizations, failure patterns, or design lessons, use them to inform the RED phase (you may already have baseline data). If nothing relevant, proceed normally.
+
 ## What is a Skill?
 
 A **skill** is a reference guide for proven techniques, patterns, or tools. Skills help future Claude instances find and apply effective approaches.
@@ -631,6 +641,10 @@ Deploying untested skills = deploying untested code. It's a violation of quality
 **Deployment:**
 - [ ] Commit skill to git and push to your fork (if configured)
 - [ ] Consider contributing back via PR (if broadly useful)
+
+**Memory Write-Back:**
+- [ ] `mempalace_add_drawer` — record the skill's purpose, key design decisions, and lessons learned during creation (e.g., which rationalizations were hardest to counter, what testing revealed). Use appropriate wing/room (e.g., `wing="work-gs"`, `room="skill-creation"` or `room="decisions"`).
+- [ ] `mempalace_kg_add` — add relationships between this skill and related entities (e.g., NewSkill `addresses` AgentFailurePattern, NewSkill `complements` ExistingSkill).
 
 ## Discovery Workflow
 

@@ -43,9 +43,23 @@ Use for ANY technical issue:
 - You're in a hurry (rushing guarantees rework)
 - Manager wants it fixed NOW (systematic is faster than thrashing)
 
-## The Four Phases
+## The Five Phases
 
 You MUST complete each phase before proceeding to the next.
+
+### Phase 0: Historical Context
+
+**BEFORE investigating the current issue, check what's already known:**
+
+1. **Search past debugging sessions** — `mempalace_search` with bug-related keywords (error message, system name, symptom description). Past sessions may contain root causes, fix patterns, or dead-ends for the same or similar issues.
+
+2. **Query entity relationships** — `mempalace_kg_query` with the entity where the bug manifests (class name, system name, module name). Known dependencies and relationships help narrow the investigation scope.
+
+3. **Apply findings** — If mempalace returns relevant history:
+   - Same bug fixed before → verify the previous fix still holds, check for regression
+   - Similar system debugged before → use the same investigation approach as starting point
+   - Known architectural constraints → factor into hypothesis formation
+   - If nothing relevant found → proceed normally, but this phase still must be attempted
 
 ### Phase 1: Root Cause Investigation
 
@@ -125,6 +139,7 @@ You MUST complete each phase before proceeding to the next.
 
 1. **Find Working Examples**
    - Locate similar working code in same codebase
+   - Search mempalace for past fixes on similar systems — what patterns worked before?
    - What works that's similar to what's broken?
 
 2. **Compare Against References**
@@ -212,6 +227,16 @@ You MUST complete each phase before proceeding to the next.
 
    This is NOT a failed hypothesis - this is a wrong architecture.
 
+### Phase 5: Write Back to Memory
+
+**After the bug is resolved, record findings for future sessions:**
+
+1. **Record the debugging result** — `mempalace_add_drawer` with `wing` matching the project (e.g., `"work-client"`), `room="debugging"`. Include: symptom, root cause, fix applied, affected components.
+
+2. **Update entity relationships** — `mempalace_kg_add` for any new relationships discovered (e.g., SystemA `has_bug_pattern` "null reference on init", ComponentX `depends_on` hidden state in ComponentY).
+
+3. **Skip write-back only if** the issue was trivial (typo, missing semicolon) with no reusable insight.
+
 ## Red Flags - STOP and Follow Process
 
 If you catch yourself thinking:
@@ -259,10 +284,12 @@ If you catch yourself thinking:
 
 | Phase | Key Activities | Success Criteria |
 |-------|---------------|------------------|
+| **0. History** | Query mempalace for past debugging sessions and entity relationships | Know what's already been investigated |
 | **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
-| **2. Pattern** | Find working examples, compare | Identify differences |
+| **2. Pattern** | Find working examples, compare (codebase + mempalace) | Identify differences |
 | **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
 | **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
+| **5. Write Back** | Record root cause, fix, and entity relationships to mempalace | Future sessions can reuse findings |
 
 ## When Process Reveals "No Root Cause"
 
