@@ -1,0 +1,4 @@
+interface:
+  display_name: "Compact Context"
+  short_description: "Create clean working briefs for handoffs and resumes."
+  default_prompt: "Use $compact-context to compress the current coding session into a clean working brief."

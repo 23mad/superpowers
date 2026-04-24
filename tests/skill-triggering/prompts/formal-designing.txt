@@ -1,0 +1,9 @@
+We need to redesign our save system.
+
+Current situation:
+- Save/load currently touches player progression, inventory, world state, and quest flags
+- We want to add cloud sync and backward-compatible migration for old save files
+- Multiple systems will need new interfaces
+- If we get this wrong, existing saves may break
+
+Please help me think through the design before we implement it.

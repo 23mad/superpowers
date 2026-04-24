@@ -49,18 +49,18 @@ cmd /c mklink /J "$env:USERPROFILE\.agents\skills\superpowers" "$env:USERPROFILE
 
 ## How It Works
 
-Codex has native skill discovery — it scans `~/.agents/skills/` at startup, parses SKILL.md frontmatter, and loads skills on demand. Superpowers skills are made visible through a single symlink:
+Codex has native skill discovery - it scans `~/.agents/skills/` at startup, parses `SKILL.md` frontmatter, and loads skills on demand. Superpowers skills are made visible through a single symlink:
 
 ```
-~/.agents/skills/superpowers/ → ~/.codex/superpowers/skills/
+~/.agents/skills/superpowers/ -> ~/.codex/superpowers/skills/
 ```
 
-The `using-superpowers` skill is discovered automatically and enforces skill usage discipline — no additional configuration needed.
+The `using-superpowers` skill is discovered automatically and enforces skill usage discipline, so no additional configuration is needed.
 
 ## Usage
 
 Skills are discovered automatically. Codex activates them when:
-- You mention a skill by name (e.g., "use brainstorming")
+- You mention a skill by name, for example `use prototyping` or `use formal-designing`
 - The task matches a skill's description
 - The `using-superpowers` skill directs Codex to use one
 
@@ -77,7 +77,7 @@ Create `~/.agents/skills/my-skill/SKILL.md`:
 ```markdown
 ---
 name: my-skill
-description: Use when [condition] - [what it does]
+description: Use when [specific trigger condition]
 ---
 
 # My Skill
@@ -85,7 +85,7 @@ description: Use when [condition] - [what it does]
 [Your skill content here]
 ```
 
-The `description` field is how Codex decides when to activate a skill automatically — write it as a clear trigger condition.
+The `description` field is how Codex decides when to activate a skill automatically. Write it as a clear trigger condition, not a summary of the workflow.
 
 ## Updating
 
@@ -106,7 +106,11 @@ rm ~/.agents/skills/superpowers
 Remove-Item "$env:USERPROFILE\.agents\skills\superpowers"
 ```
 
-Optionally delete the clone: `rm -rf ~/.codex/superpowers` (Windows: `Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\superpowers"`).
+Optionally delete the clone:
+`rm -rf ~/.codex/superpowers`
+
+Windows:
+`Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\superpowers"`
 
 ## Troubleshooting
 
@@ -114,7 +118,7 @@ Optionally delete the clone: `rm -rf ~/.codex/superpowers` (Windows: `Remove-Ite
 
 1. Verify the symlink: `ls -la ~/.agents/skills/superpowers`
 2. Check skills exist: `ls ~/.codex/superpowers/skills`
-3. Restart Codex — skills are discovered at startup
+3. Restart Codex - skills are discovered at startup
 
 ### Windows junction issues
 

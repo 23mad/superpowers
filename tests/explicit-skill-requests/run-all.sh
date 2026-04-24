@@ -14,6 +14,28 @@ PASSED=0
 FAILED=0
 RESULTS=""
 
+# Test: use formal-designing
+echo ">>> Test 0: please-use-formal-designing"
+if "$SCRIPT_DIR/run-test.sh" "formal-designing" "$PROMPTS_DIR/please-use-formal-designing.txt"; then
+    PASSED=$((PASSED + 1))
+    RESULTS="$RESULTS\nPASS: please-use-formal-designing"
+else
+    FAILED=$((FAILED + 1))
+    RESULTS="$RESULTS\nFAIL: please-use-formal-designing"
+fi
+echo ""
+
+# Test: use prototyping
+echo ">>> Test 0b: please-use-prototyping"
+if "$SCRIPT_DIR/run-test.sh" "prototyping" "$PROMPTS_DIR/please-use-prototyping.txt"; then
+    PASSED=$((PASSED + 1))
+    RESULTS="$RESULTS\nPASS: please-use-prototyping"
+else
+    FAILED=$((FAILED + 1))
+    RESULTS="$RESULTS\nFAIL: please-use-prototyping"
+fi
+echo ""
+
 # Test: subagent-driven-development, please
 echo ">>> Test 1: subagent-driven-development-please"
 if "$SCRIPT_DIR/run-test.sh" "subagent-driven-development" "$PROMPTS_DIR/subagent-driven-development-please.txt"; then

@@ -1,0 +1,8 @@
+I'm using an engine I don't know well and I need to figure out whether a grapple hook movement loop is even fun.
+
+I do NOT need a full architecture yet. I mostly need a fast, reversible experiment:
+- keep the current player controller intact
+- don't refactor unrelated systems
+- just help me frame the smallest prototype that would tell us whether this mechanic is worth continuing
+
+Can you help me approach this?

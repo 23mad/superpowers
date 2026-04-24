@@ -107,7 +107,9 @@ Start a new session in your chosen platform and ask for something that should tr
 
 ## The Basic Workflow
 
-1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
+1. **prototyping** or **formal-designing** - Activates before writing code, depending on the kind of problem.
+   - **prototyping** for unfamiliar tools, reversible experiments, and early core-loop validation where iteration speed matters more than full design rigor
+   - **formal-designing** for cross-cutting, hard-to-reverse, boundary-sensitive changes that need durable design before implementation
 
 2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
 
@@ -120,6 +122,8 @@ Start a new session in your chosen platform and ask for something that should tr
 6. **requesting-code-review** - Activates between tasks. Reviews against plan, reports issues by severity. Critical issues block progress.
 
 7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
+
+At natural pause points, **compact-context** can compress a noisy session into a clean working brief for the next phase, a handoff, or a fresh-session resume.
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
 
@@ -136,6 +140,9 @@ Start a new session in your chosen platform and ask for something that should tr
 
 **Collaboration** 
 - **brainstorming** - Socratic design refinement
+- **compact-context** - Clean working briefs for phase changes, handoffs, and fresh-session resumes
+- **formal-designing** - Durable design for cross-cutting or hard-to-reverse changes
+- **prototyping** - Fast, fenced experiments for unfamiliar or high-uncertainty work
 - **writing-plans** - Detailed implementation plans
 - **executing-plans** - Batch execution with checkpoints
 - **dispatching-parallel-agents** - Concurrent subagent workflows
@@ -148,6 +155,15 @@ Start a new session in your chosen platform and ask for something that should tr
 **Meta**
 - **writing-skills** - Create new skills following best practices (includes testing methodology)
 - **using-superpowers** - Introduction to the skills system
+
+## Design Modes
+
+Superpowers now distinguishes between two kinds of "design before code":
+
+- **Formal design** protects system boundaries. Use it when changes are cross-cutting, expensive to reverse, or meant to become durable immediately.
+- **Prototyping** protects iteration speed. Use it when the toolchain is unfamiliar, the core loop is still unclear, or the work is a reversible experiment.
+
+This split exists to avoid a common failure mode in AI-assisted development: over-formalizing uncertainty too early. Fast experiments need fences and timeboxes, not full specs. Durable changes need explicit design, not ad-hoc iteration.
 
 ## Philosophy
 

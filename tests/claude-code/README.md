@@ -82,6 +82,16 @@ echo "=== All tests passed ==="
 
 ### Fast Tests (run by default)
 
+#### test-formal-designing-and-prototyping.sh
+Tests the new design-mode split (~2 minutes):
+- `formal-designing` is recognized
+- `formal-designing` emphasizes cross-cutting / hard-to-reverse / boundary-sensitive work
+- `prototyping` is recognized
+- `prototyping` emphasizes fast reversible exploration
+- `prototyping` requires hypothesis, engineering fences, success signal, timebox, and exit rule
+- reversible unfamiliar-engine experiments choose `prototyping` instead of premature formal design
+- `formal-designing` hands off to `writing-plans`
+
 #### test-subagent-driven-development.sh
 Tests skill content and requirements (~2 minutes):
 - Skill loading and accessibility
