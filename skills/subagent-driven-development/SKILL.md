@@ -265,7 +265,7 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **superpowers:using-git-worktrees** - OPTIONAL: Use when isolated workspace is needed and suitable for the repository. For large workspaces or partially tracked repositories, prefer in-place scoped edits for small tasks or a normal Git branch in the existing checkout when branch isolation is needed and the human partner approves.
 - **superpowers:writing-plans** - Creates the plan this skill executes
 - **superpowers:requesting-code-review** - Code review template for reviewer subagents
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks

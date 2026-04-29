@@ -13,7 +13,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+**Context:** Prefer a clean isolation strategy before planning. A dedicated worktree is useful when the repository is suitable, but it is not mandatory. For large workspaces or partially tracked repositories, use in-place scoped edits for small tasks or a normal Git branch in the existing checkout when branch isolation is needed and the human partner approves.
 
 **Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
