@@ -11,92 +11,86 @@ Claiming work is complete without verification is dishonesty, not efficiency.
 
 **Core principle:** Evidence before claims, always.
 
-**Violating the letter of this rule is violating the spirit of this rule.**
-
 ## The Iron Law
 
 ```
 NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ```
 
-If you haven't run the verification command in this message, you cannot claim it passes.
+If you haven't run verification in this message, you cannot claim it passes.
 
 ## The Gate Function
 
 ```
-BEFORE claiming any status or expressing satisfaction:
+BEFORE claiming any status:
 
-1. IDENTIFY: What command proves this claim?
-2. RUN: Execute the FULL command (fresh, complete)
-3. READ: Full output, check exit code, count failures
+1. IDENTIFY: What proves this claim? (compile, runtime, log, diff)
+2. RUN: Execute the verification (fresh, complete)
+3. READ: Full output, check exit code or result
 4. VERIFY: Does output confirm the claim?
    - If NO: State actual status with evidence
    - If YES: State claim WITH evidence
 5. ONLY THEN: Make the claim
-
-Skip any step = lying, not verifying
 ```
+
+## Verification Methods
+
+Pick what fits the project and change:
+
+| Method | When to use | Example |
+|--------|-------------|---------|
+| **Compile check** | Any code change | `dotnet build`, Unity Editor compile, `go build ./...` |
+| **Runtime check** | Behavior changes | Run the game, trigger the specific scenario |
+| **Log check** | Internal logic changes | Add temporary log, run, confirm output |
+| **Diff review** | Small targeted fixes | Inspect the diff, confirm it matches intent |
+| **Linter/static analysis** | Style or pattern changes | ReadLints, `go vet` |
+| **Automated test** | If test infra is reliable | Run specific test command |
+
+**Not every change needs every method.** Match verification to what you changed.
 
 ## Common Failures
 
 | Claim | Requires | Not Sufficient |
 |-------|----------|----------------|
-| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
-| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
-| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
-| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
-| Regression test works | Red-green cycle verified | Test passes once |
-| Agent completed | VCS diff shows changes | Agent reports "success" |
-| Requirements met | Line-by-line checklist | Tests passing |
+| Code compiles | Build command output: 0 errors | "Should compile" |
+| Bug fixed | Reproduce original symptom: gone | Code changed, assumed fixed |
+| Feature works | Runtime or log evidence | "Looks correct" |
+| Requirements met | Line-by-line checklist | Compilation passing |
+| Agent completed | VCS diff shows correct changes | Agent reports "success" |
 
 ## Red Flags - STOP
 
 - Using "should", "probably", "seems to"
-- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+- Expressing satisfaction before verification ("Great!", "Done!")
 - About to commit/push/PR without verification
 - Trusting agent success reports
 - Relying on partial verification
-- Thinking "just this once"
-- Tired and wanting work over
 - **ANY wording implying success without having run verification**
-
-## Rationalization Prevention
-
-| Excuse | Reality |
-|--------|---------|
-| "Should work now" | RUN the verification |
-| "I'm confident" | Confidence ≠ evidence |
-| "Just this once" | No exceptions |
-| "Linter passed" | Linter ≠ compiler |
-| "Agent said success" | Verify independently |
-| "I'm tired" | Exhaustion ≠ excuse |
-| "Partial check is enough" | Partial proves nothing |
-| "Different words so rule doesn't apply" | Spirit over letter |
 
 ## Key Patterns
 
-**Tests:**
+**Compile:**
 ```
-✅ [Run test command] [See: 34/34 pass] "All tests pass"
-❌ "Should pass now" / "Looks correct"
-```
-
-**Regression tests (TDD Red-Green):**
-```
-✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
-❌ "I've written a regression test" (without red-green verification)
+✅ [Run build] [See: 0 errors] "Build passes"
+❌ "Should compile now" / "Looks correct"
 ```
 
-**Build:**
+**Behavior:**
 ```
-✅ [Run build] [See: exit 0] "Build passes"
-❌ "Linter passed" (linter doesn't check compilation)
+✅ [Run game/scenario] [See: expected behavior] "Verified working"
+❌ "Code looks right so it should work"
+```
+
+**Bug fix:**
+```
+✅ [Reproduce original bug steps] [See: bug gone] "Fix verified"
+❌ "Changed the code, should be fixed"
 ```
 
 **Requirements:**
 ```
 ✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
-❌ "Tests pass, phase complete"
+❌ "Code compiles, phase complete"
 ```
 
 **Agent delegation:**
@@ -105,35 +99,19 @@ Skip any step = lying, not verifying
 ❌ Trust agent report
 ```
 
-## Why This Matters
+## Rationalization Prevention
 
-From 24 failure memories:
-- your human partner said "I don't believe you" - trust broken
-- Undefined functions shipped - would crash
-- Missing requirements shipped - incomplete features
-- Time wasted on false completion → redirect → rework
-- Violates: "Honesty is a core value. If you lie, you'll be replaced."
-
-## When To Apply
-
-**ALWAYS before:**
-- ANY variation of success/completion claims
-- ANY expression of satisfaction
-- ANY positive statement about work state
-- Committing, PR creation, task completion
-- Moving to next task
-- Delegating to agents
-
-**Rule applies to:**
-- Exact phrases
-- Paraphrases and synonyms
-- Implications of success
-- ANY communication suggesting completion/correctness
+| Excuse | Reality |
+|--------|---------|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler ≠ runtime |
+| "Agent said success" | Verify independently |
+| "Partial check is enough" | Partial proves nothing |
 
 ## The Bottom Line
 
 **No shortcuts for verification.**
 
 Run the command. Read the output. THEN claim the result.
-
-This is non-negotiable.

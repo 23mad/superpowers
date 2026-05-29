@@ -15,7 +15,7 @@ Preserve decisions, constraints, relevant files, current status, and next action
 Drop search noise, duplicate discussion, abandoned branches, and verbose reasoning.
 
 This skill is for compressing active work context.
-It does not replace formal design work from `brainstorming`, implementation planning from `writing-plans`, or long-term knowledge capture in memory systems.
+It does not replace formal design work from `designing`, implementation planning from `writing-plans`, or long-term knowledge capture in memory systems.
 
 ## Use This Skill When
 

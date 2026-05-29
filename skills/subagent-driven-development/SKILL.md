@@ -20,12 +20,12 @@ digraph when_to_use {
     "Stay in this session?" [shape=diamond];
     "subagent-driven-development" [shape=box];
     "executing-plans" [shape=box];
-    "Manual execution or brainstorm first" [shape=box];
+    "Manual execution or design first" [shape=box];
 
     "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
-    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
+    "Have implementation plan?" -> "Manual execution or design first" [label="no"];
     "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
-    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
+    "Tasks mostly independent?" -> "Manual execution or design first" [label="no - tightly coupled"];
     "Stay in this session?" -> "subagent-driven-development" [label="yes"];
     "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
 }
@@ -61,7 +61,7 @@ digraph process {
     "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Finish up (merge, PR, or keep)" [shape=box style=filled fillcolor=lightgreen];
 
     "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
@@ -80,7 +80,7 @@ digraph process {
     "Mark task complete in TodoWrite" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
+    "Dispatch final code reviewer subagent for entire implementation" -> "Finish up (merge, PR, or keep)";
 }
 ```
 
@@ -144,7 +144,7 @@ You: "User level (~/.config/superpowers/hooks/)"
 Implementer: "Got it. Implementing now..."
 [Later] Implementer:
   - Implemented install-hook command
-  - Added tests, 5/5 passing
+  - Verified: compiles clean, tested manually
   - Self-review: Found I missed --force flag, added it
   - Committed
 
@@ -152,7 +152,7 @@ Implementer: "Got it. Implementing now..."
 Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
 
 [Get git SHAs, dispatch code quality reviewer]
-Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+Code reviewer: Strengths: Clean implementation, good structure. Issues: None. Approved.
 
 [Mark Task 1 complete]
 
@@ -164,7 +164,7 @@ Task 2: Recovery modes
 Implementer: [No questions, proceeds]
 Implementer:
   - Added verify/repair modes
-  - 8/8 tests passing
+  - Verified: compiles clean, behavior confirmed
   - Self-review: All good
   - Committed
 
@@ -202,7 +202,6 @@ Done!
 ## Advantages
 
 **vs. Manual execution:**
-- Subagents follow TDD naturally
 - Fresh context per task (no confusion)
 - Parallel-safe (subagents don't interfere)
 - Subagent can ask questions (before AND during work)
@@ -262,16 +261,8 @@ Done!
 - Dispatch fix subagent with specific instructions
 - Don't try to fix manually (context pollution)
 
-## Integration
+## Related Skills
 
-**Required workflow skills:**
-- **superpowers:using-git-worktrees** - OPTIONAL: Use when isolated workspace is needed and suitable for the repository. For large workspaces or partially tracked repositories, prefer in-place scoped edits for small tasks or a normal Git branch in the existing checkout when branch isolation is needed and the human partner approves.
-- **superpowers:writing-plans** - Creates the plan this skill executes
-- **superpowers:requesting-code-review** - Code review template for reviewer subagents
-- **superpowers:finishing-a-development-branch** - Complete development after all tasks
-
-**Subagents should use:**
-- **superpowers:test-driven-development** - Subagents follow TDD for each task
-
-**Alternative workflow:**
-- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+- `writing-plans` — creates the plan this skill executes
+- `finishing-a-development-branch` — useful after all tasks complete
+- `executing-plans` — alternative for parallel session execution
